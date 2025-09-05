@@ -7,11 +7,6 @@ import (
 	"github.com/OttScott/pokedexcli/internal/pokeapi"
 )
 
-type Config struct {
-	NextLocationURL     *string
-	PreviousLocationURL *string
-}
-
 type cliCommand struct {
 	name        string
 	description string
@@ -25,7 +20,7 @@ func commandExit(cfg *Config) error {
 }
 
 func commandMap(cfg *Config) error {
-    NextLocURL, prevLocURL, locs, err := pokeapi.GetLocationAreas(cfg.NextLocationURL)
+    NextLocURL, prevLocURL, locs, err := pokeapi.GetLocationAreas(cfg.cache, cfg.NextLocationURL)
 	if err != nil {
 		return fmt.Errorf("failed to fetch location areas: %v", err)
 	}
@@ -46,7 +41,7 @@ func commandMapb(cfg *Config) error {
 	} else {
 		// Fetch the previous page of locations using cfg.PreviousLocationURL
 		// Update cfg.NextLocationURL and cfg.PreviousLocationURL accordingly
-		NextURL, prevURL, locs, err := pokeapi.GetLocationAreas(cfg.PreviousLocationURL)
+		NextURL, prevURL, locs, err := pokeapi.GetLocationAreas(cfg.cache, cfg.PreviousLocationURL)
 		if err != nil {
 			return fmt.Errorf("failed to fetch previous location areas: %v", err)
 		}

@@ -4,14 +4,25 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
+	"github.com/OttScott/pokedexcli/internal/pokecache"
 )
 
+type Config struct {
+	cache			    *pokecache.Cache
+	NextLocationURL     *string
+	PreviousLocationURL *string
+}
+
 func main() {
+	cache := pokecache.NewCache(time.Second * 30)
+
 	config := &Config{
 		NextLocationURL:     nil,  // No next URL yet
 		PreviousLocationURL: nil,  // No previous URL yet
+		cache:               cache,
 	}
-	
+
 	// Basic REPL loop
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
